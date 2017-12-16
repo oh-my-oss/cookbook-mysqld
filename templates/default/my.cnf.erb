@@ -1,0 +1,42 @@
+[client]
+socket = /usr/local/lib64/mysql/<%= @mysqld_version %>/tmp/mysql.sock
+character-set-server = utf8
+
+# The MySQL server
+[mysqld]
+skip-grant-tables
+character-set-server = utf8
+basedir = /usr/local/lib64/mysql/<%= @mysqld_version %>
+datadir = /usr/local/lib64/mysql/<%= @mysqld_version %>/data
+tmpdir  = /usr/local/lib64/mysql/<%= @mysqld_version %>/tmp
+socket  = /usr/local/lib64/mysql/<%= @mysqld_version %>/tmp/mysql.sock
+
+pid-file  = /usr/local/lib64/mysql/<%= @mysqld_version %>/logs/mysqld.pid
+log-error = /usr/local/lib64/mysql/<%= @mysqld_version %>/logs/mysqld.err
+innodb_data_home_dir = /usr/local/lib64/mysql/<%= @mysqld_version %>/data
+innodb_log_group_home_dir = /usr/local/lib64/mysql/<%= @mysqld_version %>/data
+
+skip-external-locking
+key_buffer_size = 16K
+max_allowed_packet = 1M
+table_open_cache = 4
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 128K
+server-id       = 1
+
+[mysqldump]
+quick
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+
+[myisamchk]
+key_buffer_size = 8M
+sort_buffer_size = 8M
+
+[mysqlhotcopy]
+interactive-timeout

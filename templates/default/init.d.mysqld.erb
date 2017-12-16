@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# chkconfig: 2345 85 15
+# description: mysqld vesrion mysqld-<%= @mysqld_version %>.
+
+_MYSQL_VERSION=<%= @mysqld_version %>
+
+MYSQL_ROOT=/usr/local/lib64/mysql/$_MYSQL_VERSION
+touch /usr/local/lib64/mysql/$_MYSQL_VERSION/logs/mysqld.err
+chown mysql:mysql /usr/local/lib64/mysql/$_MYSQL_VERSION/logs/mysqld.err
+MYSQLD_SAFE=$MYSQL_ROOT/bin/mysqld_safe
+MYSQLD_PIDFILE=$MYSQL_ROOT/logs/mysqld.pid
+
+function mysqld_start()
+{
+  if [[ -f $MYSQLD_PIDFILE ]] ; then
+    echo "Already started mysqld..."
+  else
+    echo "Starting mysqld..."
+    $MYSQLD_SAFE --defaults-file=$MYSQL_ROOT/my.cnf --user=mysql &
+    if [[ $? != "0" ]] ; then
+      echo "mysqld start failed."
+    fi
+  fi
+}
+function mysqld_stop()
+{
+  if [[ -f $MYSQLD_PIDFILE ]] ; then
+    echo "Stopping mysqld..."
+    kill $(cat $MYSQLD_PIDFILE)
+  else
+    echo "Already stopped mysqld..."
+  fi
+}
+
+case $1 in
+  start)
+    mysqld_start
+    ;;
+  stop)
+    mysqld_stop
+    ;;
+  restart)
+    mysqld_stop
+    mysqld_start
+    ;;
+  current)
+    if [[ -f $MYSQLD_PIDFILE ]] ; then
+      ps ux -p "$(cat $MYSQLD_PIDFILE)"
+    fi
+    ;;
+  *)
+    echo "Usage: service mysqld-<%= @mysqld_version %> [start|stop|restart|current]"
+    ;;
+esac
