@@ -26,21 +26,25 @@ node['mysqld_versions'].each do |version|
 
     match = version.match(/^\d+\.\d+/)
     execute 'wget mysql ' + version + ' tar ball' do
+        cwd '/tmp'
         command 'wget https://dev.mysql.com/get/Downloads/MySQL-' + match[0] + '/mysql-' + version + '-linux-glibc2.12-x86_64.tar.gz'
         not_if { Dir.exists?('/usr/local/lib64/mysql/' + version) }
     end
 
     execute 'tar zxf mysql ' + version + ' tar ball' do
+        cwd '/tmp'
         command 'tar zxf mysql-' + version + '-linux-glibc2.12-x86_64.tar.gz'
         not_if { Dir.exists?('/usr/local/lib64/mysql/' + version) }
     end
 
     execute 'rm mysql ' + version + ' tar ball' do
-        command 'rm -f /mysql-' + version + '-linux-glibc2.12-x86_64.tar.gz'
-        only_if { File.exists?('/mysql-' + version + '-linux-glibc2.12-x86_64.tar.gz') }
+        cwd '/tmp'
+        command 'rm -f mysql-' + version + '-linux-glibc2.12-x86_64.tar.gz'
+        only_if { File.exists?('mysql-' + version + '-linux-glibc2.12-x86_64.tar.gz') }
     end
 
     execute 'mv mysql ' + version + ' lib dir' do
+        cwd '/tmp'
         command 'mv mysql-' + version + '-linux-glibc2.12-x86_64 /usr/local/lib64/mysql/' + version
         not_if { Dir.exists?('/usr/local/lib64/mysql/' + version) }
     end
