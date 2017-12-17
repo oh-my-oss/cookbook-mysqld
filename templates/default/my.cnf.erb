@@ -1,9 +1,11 @@
 [client]
+port = <%= @port %>
 socket = /usr/local/lib64/mysql/<%= @mysqld_version %>/tmp/mysql.sock
 character-set-server = utf8
 
 # The MySQL server
 [mysqld]
+port = <%= @port %>
 skip-grant-tables
 character-set-server = utf8
 basedir = /usr/local/lib64/mysql/<%= @mysqld_version %>
