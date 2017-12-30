@@ -12,6 +12,9 @@ user "mysql" do
     action :create
 end
 
+# mysql client.
+package 'mysql'
+
 directory "/usr/local/lib64/mysql" do
     owner "mysql"
     group "mysql"
