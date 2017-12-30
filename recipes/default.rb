@@ -56,7 +56,7 @@ node['mysqld_versions'].each do |version|
         directory '/usr/local/lib64/mysql/' + version + '/' + dir do
             owner "mysql"
             group "mysql"
-            mode 0700
+            mode 0755
             recursive true
             action :create
             not_if { Dir.exists?('/usr/local/lib64/mysql/' + version + '/' + dir) }
