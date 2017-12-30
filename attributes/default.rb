@@ -1,1 +1,1 @@
-default[:mysqld_versions] = ["5.7.20", "5.6.38"]
+default[:mysqld_versions] = ["5.5.58", "5.6.38"]
